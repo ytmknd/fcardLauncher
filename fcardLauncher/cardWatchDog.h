@@ -3,8 +3,8 @@
 #include "resource.h"
 #include "../felicalib/src/include/felicalib.h"
 
-#define SYSTEM_CODE 0x88B4  //ŒÅ’è
-#define SERVICE_CODE 0x000B //ŒÅ’è
+#define SYSTEM_CODE 0x88B4  //Å’Ã…â€™Ã¨
+#define SERVICE_CODE 0x000B //Å’Ã…â€™Ã¨
 #define READ_BLOCK_LENGTH 0x10
 
 enum {
@@ -14,7 +14,7 @@ enum {
 	NFC_READER_DISABLED
 };
 
-extern pasori *pPasori;	// pasori ƒ|ƒCƒ“ƒ^
+extern pasori *pPasori;	// pasori Æ’|Æ’CÆ’â€œÆ’^
 
 extern bool openFelicaReader();
 extern bool closeFelicaReader();
