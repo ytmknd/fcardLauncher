@@ -8,7 +8,6 @@ bool execProgram(UINT16 dfc)
 {
 	WCHAR desktop[_MAX_PATH], commandLine[_MAX_PATH];
 
-	/* get felica.dll path */
 	SHGetSpecialFolderPath(NULL, desktop, CSIDL_DESKTOPDIRECTORY, FALSE);
 	_snwprintf_s(commandLine,
 		(size_t)_MAX_PATH,
@@ -16,25 +15,23 @@ bool execProgram(UINT16 dfc)
 		L"C:\\Windows\\notepad.exe %s\\test.txt",
 		desktop);
 
-	STARTUPINFO si;// ƒXƒ^[ƒgƒAƒbƒvî•ñ
-	PROCESS_INFORMATION pi;// ƒvƒƒZƒXî•ñ
-						   //STARTUPINFO \‘¢‘Ì‚Ì“à—e‚ðŽæ“¾ 
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
 	ZeroMemory(&si, sizeof(si));
 
 	if (FindWindow(L"Notepad", NULL) == NULL) {
 		int ret = 0;
 		ret = CreateProcess(
-			NULL,					// ŽÀs‰Â”\ƒ‚ƒWƒ…[ƒ‹‚Ì–¼‘O
-			commandLine,	// ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì•¶Žš—ñ
-			NULL,					// ƒZƒLƒ…ƒŠƒeƒB‹LqŽq
-			NULL,					// ƒZƒLƒ…ƒŠƒeƒB‹LqŽq
-			FALSE,					// ƒnƒ“ƒhƒ‹‚ÌŒp³ƒIƒvƒVƒ‡ƒ“
-			CREATE_NEW_PROCESS_GROUP,					// ì¬‚Ìƒtƒ‰ƒO 
-														//CREATE_NEW_PROCESS_GROUP	: V‚½‚ÈƒvƒƒZƒX
-			NULL,					// V‚µ‚¢ŠÂ‹«ƒuƒƒbƒN
-			NULL,					// ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘O
-			&si,					// ƒXƒ^[ƒgƒAƒbƒvî•ñ
-			&pi					// ƒvƒƒZƒXî•ñ
+			NULL,					// å®Ÿè¡Œå¯èƒ½ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åå‰
+			commandLine,	// ã‚³ãƒžãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®æ–‡å­—åˆ—
+			NULL,					// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£è¨˜è¿°å­
+			NULL,					// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£è¨˜è¿°å­
+			FALSE,					// ãƒãƒ³ãƒ‰ãƒ«ã®ç¶™æ‰¿ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+			CREATE_NEW_PROCESS_GROUP,		// ä½œæˆã®ãƒ•ãƒ©ã‚° 
+			NULL,					// æ–°ã—ã„ç’°å¢ƒãƒ–ãƒ­ãƒƒã‚¯
+			NULL,					// ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®åå‰
+			&si,					// ã‚¹ã‚¿ãƒ¼ãƒˆã‚¢ãƒƒãƒ—æƒ…å ±
+			&pi					// ãƒ—ãƒ­ã‚»ã‚¹æƒ…å ±
 		);
 		if (ret) {
 			CloseHandle(pi.hThread);
