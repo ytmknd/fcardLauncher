@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="$(var.fcardLauncher.TargetName)" Language="1041" Version="0.9.9.0" Manufacturer="YTProducts" 
+           UpgradeCode="c2a49eb8-ff6d-41ca-ba4a-f42e41da6a84">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+    
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="../LICENSE.rtf" />
+
+    <InstallExecuteSequence>
+      <ScheduleReboot After='InstallFinalize' />
+    </InstallExecuteSequence>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="$(var.fcardLauncher.TargetName)" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+    <Component Id="ProductComponentExe" KeyPath="yes" Guid="DEC489B8-6231-4234-BBFC-BCBBFDF0A368">
+      <File Source="$(var.fcardLauncher.TargetPath)" />
+    </Component>
+
+     <Component Id="ProductComponentRegistry" KeyPath="yes" Guid="34EF39E0-49C7-45FD-A919-4DC8B3C2D1A2">  
+       <RegistryKey Id='RegInstallForAutorun'
+        Root="HKLM" Action="createAndRemoveOnUninstall"
+        Key="Software\Microsoft\Windows\CurrentVersion\Run" >
+        <RegistryValue
+          Name="$(var.fcardLauncher.TargetName) start up"
+          Value="[INSTALLFOLDER]$(var.fcardLauncher.TargetFileName)"
+          Type="string" />
+        </RegistryKey>
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

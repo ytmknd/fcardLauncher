@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "felicalib", "felicalib\src\lib\felicalib.vcxproj", "{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setupx86", "Setupx86\Setupx86.wixproj", "{C997B0DC-2C56-4795-8856-632683B4264E}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setupx86_64", "Setupx86_64\Setupx86_64.wixproj", "{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fcardLauncher", "fcardLauncher\fcardLauncher.vcxproj", "{D13216C2-7D02-415F-866E-1F01F1DF3556}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FEF15968-226D-4795-AE70-7F22F08D2AE7}"
+	ProjectSection(SolutionItems) = preProject
+		AUTHORS.txt = AUTHORS.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Debug|x64.ActiveCfg = Debug|x64
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Debug|x64.Build.0 = Debug|x64
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Debug|x86.ActiveCfg = Debug|Win32
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Debug|x86.Build.0 = Debug|Win32
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Release|x64.ActiveCfg = Release|x64
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Release|x64.Build.0 = Release|x64
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Release|x86.ActiveCfg = Release|Win32
+		{6C207D2C-38B7-4C66-B1C6-7A74F59F2583}.Release|x86.Build.0 = Release|Win32
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Debug|x64.ActiveCfg = Debug|x86
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Debug|x86.ActiveCfg = Debug|x86
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Debug|x86.Build.0 = Debug|x86
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Release|x64.ActiveCfg = Release|x86
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Release|x86.ActiveCfg = Release|x86
+		{C997B0DC-2C56-4795-8856-632683B4264E}.Release|x86.Build.0 = Release|x86
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Debug|x64.ActiveCfg = Debug|x64
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Debug|x64.Build.0 = Debug|x64
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Debug|x86.ActiveCfg = Debug|x86
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Release|x64.ActiveCfg = Release|x86
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Release|x86.ActiveCfg = Release|x86
+		{BC7C5BA1-C406-4F6F-9D4C-39FEFBA294A0}.Release|x86.Build.0 = Release|x86
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Debug|x64.ActiveCfg = Debug|x64
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Debug|x64.Build.0 = Debug|x64
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Debug|x86.ActiveCfg = Debug|Win32
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Debug|x86.Build.0 = Debug|Win32
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Release|x64.ActiveCfg = Release|x64
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Release|x64.Build.0 = Release|x64
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Release|x86.ActiveCfg = Release|Win32
+		{D13216C2-7D02-415F-866E-1F01F1DF3556}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
