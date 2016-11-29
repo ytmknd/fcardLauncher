@@ -4,7 +4,7 @@
 #include <shlobj.h>
 #include "launchProgram.h"
 
-bool execProgram(UINT16 dfc)
+bool launchProgram(UINT16 dfc)
 {
 	WCHAR desktop[_MAX_PATH], commandLine[_MAX_PATH];
 
@@ -20,20 +20,9 @@ bool execProgram(UINT16 dfc)
 	ZeroMemory(&si, sizeof(si));
 
 	if (FindWindow(L"Notepad", NULL) == NULL) {
-		int ret = 0;
-		ret = CreateProcess(
-			NULL,					// 実行可能モジュールの名前
-			commandLine,	// コマンドラインの文字列
-			NULL,					// セキュリティ記述子
-			NULL,					// セキュリティ記述子
-			FALSE,					// ハンドルの継承オプション
-			CREATE_NEW_PROCESS_GROUP,		// 作成のフラグ 
-			NULL,					// 新しい環境ブロック
-			NULL,					// カレントディレクトリの名前
-			&si,					// スタートアップ情報
-			&pi					// プロセス情報
-		);
-		if (ret) {
+		if (CreateProcess(NULL, commandLine, NULL, NULL, FALSE,
+						CREATE_NEW_PROCESS_GROUP, NULL, NULL,
+						&si, &pi)) {
 			CloseHandle(pi.hThread);
 			CloseHandle(pi.hProcess);
 		}

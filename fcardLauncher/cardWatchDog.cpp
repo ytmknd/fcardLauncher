@@ -94,7 +94,7 @@ bool felicaCardStatusUpdate(int event, HWND hwnd)
 		if (bPasoriEnabled) {
 			if (readIDmFromFelicaCard()) {
 				// Program起動
-				execProgram(0000);
+				launchProgram(0000);
 
 				// カード仕舞忘れ警告
 				if (isMislayingFelicaCardOnReader()) {

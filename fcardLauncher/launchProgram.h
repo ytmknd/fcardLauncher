@@ -1,3 +1,3 @@
 #pragma once
 
-extern bool execProgram(UINT16 dfc);
+extern bool launchProgram(UINT16 dfc);
