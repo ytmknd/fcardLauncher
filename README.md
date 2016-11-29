@@ -1,12 +1,13 @@
 # fcardLauncher
 
-## 説明
+## Intro
 
-## 使用しているライブラリについて
-felicalib is licenced under BSD(3-Clause License)  
+## Requirement
+fcardLauncher depends on [felicalib](http://felicalib.tmurakam.org/ "felicalib")(and including it in repos).  
+[felicalib](http://felicalib.tmurakam.org/ "felicalib") is licenced under BSD(3-Clause License)  
   Copyright (c) 2007, Takuya Murakami, All rights reserved.
 
-## ライセンス
+## License
 BSD 3-Clause License
 
 
