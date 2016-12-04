@@ -10,6 +10,7 @@
 #include "fcardLauncher.h"
 #include "intervalTimer.h"
 #include "cardWatchDog.h"
+#include "launchProgram.h"
 
 #define MAX_LOADSTRING 100
 
@@ -207,6 +208,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			MessageBox(hWnd, L"Error Start Timer", L"Error", MB_OK);
 			return -1;
 		}
+		if (!initlaunchProgram()) {
+			MessageBox(hWnd, L"Error initlaunchProgram()", L"Error", MB_OK);
+			return -1;
+		}
 		{
 			DEV_BROADCAST_DEVICEINTERFACE *pFilterData =
 				(DEV_BROADCAST_DEVICEINTERFACE*)
@@ -220,12 +225,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (!RegisterDeviceNotification(hWnd, pFilterData, DEVICE_NOTIFY_WINDOW_HANDLE)) {
 				return -1;
 			}
-		}
-		if (!openFelicaReader())
-		{
-			MessageBox(hWnd, L"Error Felica Reader initialize", L"Error", MB_OK);
-			felicaCardStatusUpdate(NFC_READER_DISABLED, hWnd);
-			//return -1;
 		}
 		break;
     case WM_COMMAND:
@@ -273,11 +272,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					{
 					case DBT_DEVICEARRIVAL:
 						OutputDebugString(L"Attached");
-						felicaCardStatusUpdate(NFC_READER_ENABLED, hWnd);
+						WatchDogStatusUpdate(EV_NFC_READER_ENABLED, hWnd);
 						break;
 					case DBT_DEVICEREMOVECOMPLETE:
 						OutputDebugString(L"Detached");
-						felicaCardStatusUpdate(NFC_READER_DISABLED, hWnd);
+						WatchDogStatusUpdate(EV_NFC_READER_DISABLED, hWnd);
 						break;
 					default:
 						break;
@@ -297,7 +296,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
 		StopIntervalTimer(hWnd);
 		DeleteNotificationIcon(hWnd);
-		closeFelicaReader();
+		closeCardReader();
 		PostQuitMessage(0);
         break;
     default:

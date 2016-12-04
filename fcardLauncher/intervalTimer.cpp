@@ -38,7 +38,7 @@ BOOL StopIntervalTimer(HWND hwnd)
 //
 BOOL ProcIntervalTimerNortification(HWND hwnd)
 {
-	felicaCardStatusUpdate(TIMER_UPDATE, hwnd);
+	WatchDogStatusUpdate(EV_TIMER_UPDATE, hwnd);
 
 	return true;
 }

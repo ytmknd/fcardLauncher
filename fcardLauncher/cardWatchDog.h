@@ -3,19 +3,26 @@
 #include "resource.h"
 #include "../felicalib/src/include/felicalib.h"
 
-#define SYSTEM_CODE 0x88B4  //ŒÅ’è
-#define SERVICE_CODE 0x000B //ŒÅ’è
+#define SYSTEM_CODE 0x88B4  //
+#define SERVICE_CODE 0x000B //
 #define READ_BLOCK_LENGTH 0x10
 
 enum {
-	NOP,
-	TIMER_UPDATE,
-	NFC_READER_ENABLED,
-	NFC_READER_DISABLED
+	ST_START_WATCHING,
+	ST_WAITING_READER_READY,
+	ST_WAITING_CARD,
+	ST_WAITING_PROGRAM_STARTUP
 };
 
-extern pasori *pPasori;	// pasori ƒ|ƒCƒ“ƒ^
+enum {
+	NOP,
+	EV_TIMER_UPDATE,
+	EV_NFC_READER_ENABLED,
+	EV_NFC_READER_DISABLED
+};
 
-extern bool openFelicaReader();
-extern bool closeFelicaReader();
-extern bool felicaCardStatusUpdate(int event, HWND hwnd);
+extern pasori *pPasori;	// pasori ポインタ
+
+extern bool openCardReader();
+extern bool closeCardReader();
+extern bool WatchDogStatusUpdate(int event, HWND hwnd);

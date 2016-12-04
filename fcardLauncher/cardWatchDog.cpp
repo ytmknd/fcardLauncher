@@ -10,17 +10,19 @@
 INT_PTR CALLBACK    Caution(HWND, UINT, WPARAM, LPARAM);
 
 pasori *pPasori;	// pasori ポインタ
-bool bPasoriEnabled = false;
+bool bCardReaderEnabled = false;
+
+static int state = ST_START_WATCHING;
 
 static int counter = 0;
 #define COUNT_LIMIT (5*3)
 
 //
-//  関数: openFelicaReader()
+//  関数: openCardReader()
 //
-//  目的: Felicaカードリーダーを初期化し、カードの読み取りが可能な状態にします。
+//  目的: カードリーダーを初期化し、カードの読み取りが可能な状態にします。
 //
-bool openFelicaReader()
+bool openCardReader()
 {
 	pPasori = pasori_open(NULL);
 	if (!pPasori) return false;
@@ -37,11 +39,11 @@ bool openFelicaReader()
 }
 
 //
-//  関数: closeFelicaReader()
+//  関数: closeCardReader()
 //
-//  目的:  Felicaカードリーダーの使用を終了しリソースを開放します。
+//  目的:  カードリーダーの使用を終了しリソースを開放します。
 //
-bool closeFelicaReader()
+bool closeCardReader()
 {
 	if (pPasori) {
 		pasori_close(pPasori);
@@ -50,7 +52,12 @@ bool closeFelicaReader()
 	return true;
 }
 
-bool isMislayingFelicaCardOnReader()
+//
+//  関数: IsMislayingFelicaCardOnReader()
+//
+//  目的: カードしまい忘れ判定
+//
+bool IsMislayingFelicaCardOnReader()
 {
 	counter += 1;
 
@@ -62,6 +69,11 @@ bool isMislayingFelicaCardOnReader()
 	}
 }
 
+//
+//  関数: readIDmFromFelicaCard()
+//
+//  目的: 
+//
 bool readIDmFromFelicaCard() {
 	felica *f; // felica ポインタ
 	uint8 data[READ_BLOCK_LENGTH + 1]; //readしたデータの受け口 
@@ -84,33 +96,59 @@ bool readIDmFromFelicaCard() {
 	return ret;
 }
 
-bool felicaCardStatusUpdate(int event, HWND hwnd)
+//
+//  関数: WatchDogStatusUpdate()
+//
+//  目的: 
+//
+bool WatchDogStatusUpdate(int event, HWND hwnd)
 {
 	extern HINSTANCE hInst;
 
 	switch (event)
 	{
-	case TIMER_UPDATE:
-		if (bPasoriEnabled) {
-			if (readIDmFromFelicaCard()) {
-				// Program起動
-				launchProgram(0000);
+	case EV_TIMER_UPDATE:
+		switch (state)
+		{
+		case ST_START_WATCHING:
+			if (openCardReader()) {
+				bCardReaderEnabled = true;
+				state = ST_WAITING_CARD;
+			}
+			else {
+				bCardReaderEnabled = false;
+				state = ST_WAITING_READER_READY;
+			}
+			break;
+		case ST_WAITING_PROGRAM_STARTUP:
+			state = ST_WAITING_CARD;
+			break;
+		default:
+			if (bCardReaderEnabled) {
+				if (readIDmFromFelicaCard()) {
+					// Program起動
+					launchProgram(0000);
 
-				// カード仕舞忘れ警告
-				if (isMislayingFelicaCardOnReader()) {
-					if (FindWindow(NULL, L"Caution!") == NULL) {
-						DialogBox(hInst, MAKEINTRESOURCE(IDD_CAUTIONDIALOG), hwnd, Caution);
+					// カードしまい忘れ警告
+					if (IsMislayingFelicaCardOnReader()) {
+						if (FindWindow(NULL, L"Caution!") == NULL) {
+							DialogBox(hInst, MAKEINTRESOURCE(IDD_CAUTIONDIALOG), hwnd, Caution);
+						}
 					}
 				}
 			}
 		}
 		break;
-	case NFC_READER_ENABLED:
-		if ( openFelicaReader() ) bPasoriEnabled = true;
+	case EV_NFC_READER_ENABLED:
+		if (openCardReader()) {
+			bCardReaderEnabled = true;
+			state = ST_WAITING_CARD;
+		}
 		break;
-	case NFC_READER_DISABLED:
-		closeFelicaReader();
-		bPasoriEnabled = false;
+	case EV_NFC_READER_DISABLED:
+		closeCardReader();
+		bCardReaderEnabled = false;
+		state = ST_WAITING_READER_READY;
 		break;
 	default:
 		break;
@@ -119,7 +157,11 @@ bool felicaCardStatusUpdate(int event, HWND hwnd)
 	return true;
 }
 
-// カード仕舞忘れ警告ダイアログのメッセージ ハンドラーです。
+//
+//  関数: CALLBACK Caution
+//
+//  目的: カードしまい忘れ警告ダイアログのメッセージ ハンドラー
+//
 INT_PTR CALLBACK Caution(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
