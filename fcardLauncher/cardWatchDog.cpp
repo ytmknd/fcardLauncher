@@ -14,8 +14,11 @@ bool bCardReaderEnabled = false;
 
 static int state = ST_START_WATCHING;
 
-static int counter = 0;
-#define COUNT_LIMIT (5*3)
+#define COUNT_LIMIT_MISLAYING (5*6)
+static int counter_mislaying = 0;
+
+#define COUNT_LIMIT_PROGRAM_STARTUP (3)
+static int counter_program_startup = 0;
 
 //
 //  関数: openCardReader()
@@ -59,9 +62,9 @@ bool closeCardReader()
 //
 bool IsMislayingFelicaCardOnReader()
 {
-	counter += 1;
+	counter_mislaying += 1;
 
-	if (counter >= COUNT_LIMIT) {
+	if (counter_mislaying >= COUNT_LIMIT_MISLAYING) {
 		return true;
 	}
 	else {
@@ -83,7 +86,7 @@ bool readIDmFromFelicaCard() {
 
 	if (!f) {
 		OutputDebugString(L"not found.\n");
-		counter = 0;
+		counter_mislaying = 0;
 		ret = false;
 	}
 	else {
@@ -121,7 +124,11 @@ bool WatchDogStatusUpdate(int event, HWND hwnd)
 			}
 			break;
 		case ST_WAITING_PROGRAM_STARTUP:
-			state = ST_WAITING_CARD;
+			counter_program_startup += 1;
+			if (counter_program_startup >= COUNT_LIMIT_PROGRAM_STARTUP) {
+				state = ST_WAITING_CARD;
+				counter_program_startup = 0;
+			}
 			break;
 		default:
 			if (bCardReaderEnabled) {
@@ -129,6 +136,8 @@ bool WatchDogStatusUpdate(int event, HWND hwnd)
 					DFC dfc = {0,0,0,0};
 					// Program起動
 					launchProgram(dfc);
+					counter_program_startup = 0;
+					state = ST_WAITING_PROGRAM_STARTUP;
 
 					// カードしまい忘れ警告
 					if (IsMislayingFelicaCardOnReader()) {
