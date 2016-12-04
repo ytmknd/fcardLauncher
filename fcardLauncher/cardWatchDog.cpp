@@ -75,7 +75,7 @@ bool IsMislayingFelicaCardOnReader()
 //
 //  関数: readIDmFromFelicaCard()
 //
-//  目的: 
+//  目的: Felica カードから DFC を読み取ります
 //
 bool readDFCFromFelicaCard(DFC dfc) {
 	felica *f; // felica ポインタ
@@ -89,15 +89,19 @@ bool readDFCFromFelicaCard(DFC dfc) {
 		counter_mislaying = 0;
 		ret = false;
 	}
-	else if (felica_read_without_encryption02(f, SERVICE_CODE, 0, 0x82, data) == 0) {
-		dfc[0] = data[8];
-		dfc[1] = data[9];
-		OutputDebugString(L"found.\n");
-		felica_free(f);
-		ret = true;
-	}
 	else {
-		;
+		if (felica_read_without_encryption02(f, SERVICE_CODE, 0, 0x82, data) == 0) {
+			dfc[0] = data[8];
+			dfc[1] = data[9];
+			OutputDebugString(L"found.\n");
+			felica_free(f);
+			ret = true;
+		}
+		else {
+			OutputDebugString(L"can't read card.\n");
+			felica_free(f);
+			ret = false;
+		}
 	}
 
 	return ret;
