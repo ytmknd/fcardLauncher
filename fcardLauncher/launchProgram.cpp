@@ -4,7 +4,7 @@
 #include <shlobj.h>
 #include "launchProgram.h"
 
-const LPCWSTR REGKEYPATHBASE = L"SOFTWARE\\FCARDLAUNCHER";
+const LPCWSTR REGKEYPATHBASE = L"SOFTWARE\\FCARDLAUNCHER"; // TODO
 
 struct StEntry
 {
