@@ -1,6 +1,6 @@
 # fcardLauncher
 
-A launcher utility using with felica card(including lite-s card) and reader.
+A launcher utility using with felica card(including lite-s card) and reader for Windows.
 
 ## Description
 
