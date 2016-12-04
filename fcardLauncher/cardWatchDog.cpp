@@ -126,8 +126,9 @@ bool WatchDogStatusUpdate(int event, HWND hwnd)
 		default:
 			if (bCardReaderEnabled) {
 				if (readIDmFromFelicaCard()) {
+					DFC dfc = {0,0,0,0};
 					// Program起動
-					launchProgram(0000);
+					launchProgram(dfc);
 
 					// カードしまい忘れ警告
 					if (IsMislayingFelicaCardOnReader()) {

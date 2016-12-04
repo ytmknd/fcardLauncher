@@ -73,37 +73,51 @@ bool initlaunchProgram()
 	return retValue;
 }
 
+static bool lcl_dfc2WCHAR(DFC dfc,WCHAR *szDFCStr)
+{
+	_snwprintf_s(szDFCStr,
+		(size_t)5,
+		(size_t)5,
+		L"%1X%1X%1X%1X", dfc[0], dfc[1],dfc[2],dfc[3]);
+
+	return true;
+}
+
 //
 //  ä÷êî: launchProgram
 //
 //  ñ⁄ìI: 
 //
-bool launchProgram(UINT16 dfc)
+bool launchProgram(DFC dfc)
 {
-	WCHAR desktop[_MAX_PATH], commandLine[_MAX_PATH];
-
-	SHGetSpecialFolderPath(NULL, desktop, CSIDL_DESKTOPDIRECTORY, FALSE);
-	_snwprintf_s(commandLine,
-		(size_t)_MAX_PATH,
-		(size_t)_MAX_PATH,
-		L"C:\\Windows\\notepad.exe %s\\test.txt",
-		desktop);
+	WCHAR *szDFCStr[5];
+	WCHAR szCommadLine[MAX_PATH];
+	DWORD dwCommandLineSize = sizeof(szCommadLine);
+	int i;
+	bool procflag = false;
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	ZeroMemory(&si, sizeof(si));
 
-	if (FindWindow(L"Notepad", NULL) == NULL) {
-		if (CreateProcess(NULL, commandLine, NULL, NULL, FALSE,
-						CREATE_NEW_PROCESS_GROUP, NULL, NULL,
-						&si, &pi)) {
-			CloseHandle(pi.hThread);
-			CloseHandle(pi.hProcess);
+	lcl_dfc2WCHAR(dfc, (WCHAR *)szDFCStr);
+
+	for (i = 0; i < MAX_ENTRY; i++) {
+		if (jt.entry[i].dfc == NULL) break;
+		if (wcscmp(jt.entry[i].dfc, (const WCHAR *)szDFCStr) == 0) {
+			if (CreateProcess(NULL, jt.entry[i].path, NULL, NULL, FALSE,
+				CREATE_NEW_PROCESS_GROUP, NULL, NULL,
+				&si, &pi)) {
+				CloseHandle(pi.hThread);
+				CloseHandle(pi.hProcess);
+			}
+			procflag = true;
+		}
+		else {
+			;
 		}
 	}
-	else {
-		;
-	}
-	return true;
+
+	return procflag;
 }
 
