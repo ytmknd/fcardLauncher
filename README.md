@@ -1,6 +1,12 @@
 # fcardLauncher
 
-## Intro
+A launcher utility using with felica card(including lite-s card) and reader.
+
+## Description
+
+## Usage
+
+## Build
 
 ## Requirement
 fcardLauncher depends on [felicalib](http://felicalib.tmurakam.org/ "felicalib")(and including it in repos).  
