@@ -24,25 +24,21 @@
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="$(var.fcardLauncher.TargetName)" />
 			</Directory>
-
-      <Directory Id="SystemFolder" Name="SystemFolder"/>
     </Directory>
-	</Fragment>
 
-  <Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ProductComponentExe" KeyPath="yes" Guid="DEC489B8-6231-4234-BBFC-BCBBFDF0A368">
         <File Source="$(var.fcardLauncher.TargetPath)" />
       </Component>
 
-      <Component Id="ProductComponentRegistry" KeyPath="yes" Guid="34EF39E0-49C7-45FD-A919-4DC8B3C2D1A2">
-        <RegistryKey Id='RegInstallForAutorun'
-        Root="HKLM" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes"
-        Key="Software\Microsoft\Windows\CurrentVersion\Run" >
+      <Component Id="ProductSettingRegistry" KeyPath="yes" Guid="8C76C8CF-8914-4370-8D23-2B5C07FC0900">
+        <RegistryKey Id='RegSetting'
+          Root="HKLM" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes"
+          Key="Software\$(var.fcardLauncher.TargetName)\0000" >
           <RegistryValue
-           Name="$(var.fcardLauncher.TargetName) start up"
-           Value="[INSTALLFOLDER]$(var.fcardLauncher.TargetFileName)"
-           Type="string" />
+            Name="path"
+            Value="[SystemFolder]mstsc.exe"
+            Type="string" />
         </RegistryKey>
       </Component>
     </ComponentGroup>

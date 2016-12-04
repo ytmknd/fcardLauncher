@@ -24,10 +24,8 @@
 			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLFOLDER" Name="$(var.fcardLauncher.TargetName)" />
 			</Directory>
-      
-      <Directory Id="SystemFolder" Name="SystemFolder"/>
-		</Directory>
-
+    </Directory>
+    
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ProductComponentExe" KeyPath="yes" Guid="DEC489B8-6231-4234-BBFC-BCBBFDF0A368">
         <File Source="$(var.fcardLauncher.TargetPath)" ProcessorArchitecture='x64'/>
@@ -43,6 +41,17 @@
             Type="string" />
         </RegistryKey>
       </Component>
-		</ComponentGroup>
+
+      <Component Id="ProductSettingRegistry" KeyPath="yes" Guid="8C76C8CF-8914-4370-8D23-2B5C07FC0900">
+        <RegistryKey Id='RegSetting'
+          Root="HKLM" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes"
+          Key="Software\$(var.fcardLauncher.TargetName)\0000" >
+          <RegistryValue
+            Name="path"
+            Value="[System64Folder]mstsc.exe"
+            Type="string" />
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
 	</Fragment>
 </Wix>
