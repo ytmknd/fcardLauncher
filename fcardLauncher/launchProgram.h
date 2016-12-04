@@ -2,7 +2,7 @@
 
 #include "../felicalib/src/include/felicalib.h"
 
-typedef uint8 DFC[4];
+typedef uint8 DFC[2];
 
 extern bool initlaunchProgram();
 extern bool launchProgram(DFC dfc);

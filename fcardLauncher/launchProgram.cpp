@@ -84,7 +84,7 @@ static bool lcl_dfc2WCHAR(DFC dfc,WCHAR *szDFCStr)
 	_snwprintf_s(szDFCStr,
 		(size_t)5,
 		(size_t)5,
-		L"%1X%1X%1X%1X", dfc[0], dfc[1],dfc[2],dfc[3]);
+		L"%02X%02X", dfc[0], dfc[1]);
 
 	return true;
 }
