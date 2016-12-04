@@ -24,6 +24,8 @@
 			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLFOLDER" Name="$(var.fcardLauncher.TargetName)" />
 			</Directory>
+      
+      <Directory Id="SystemFolder" Name="SystemFolder"/>
 		</Directory>
 
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
@@ -33,7 +35,7 @@
 
       <Component Id="ProductComponentRegistry" KeyPath="yes" Guid="34EF39E0-49C7-45FD-A919-4DC8B3C2D1A2">
         <RegistryKey Id='RegInstallForAutorun'
-          Root="HKLM" Action="createAndRemoveOnUninstall"
+          Root="HKLM" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes"
           Key="Software\Microsoft\Windows\CurrentVersion\Run" >
           <RegistryValue
             Name="$(var.fcardLauncher.TargetName) start up"
