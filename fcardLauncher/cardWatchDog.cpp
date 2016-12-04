@@ -75,9 +75,9 @@ bool IsMislayingFelicaCardOnReader()
 //
 //  関数: readIDmFromFelicaCard()
 //
-//  目的: 
+//  目的: Felica カードから DFC を読み取ります
 //
-bool readIDmFromFelicaCard() {
+bool readDFCFromFelicaCard(DFC dfc) {
 	felica *f; // felica ポインタ
 	uint8 data[READ_BLOCK_LENGTH + 1]; //readしたデータの受け口 
 	bool ret = false;
@@ -90,10 +90,18 @@ bool readIDmFromFelicaCard() {
 		ret = false;
 	}
 	else {
-		felica_getidm(f, data);
-		OutputDebugString(L"found.\n");
-		felica_free(f);
-		ret = true;
+		if (felica_read_without_encryption02(f, SERVICE_CODE, 0, 0x82, data) == 0) {
+			dfc[0] = data[8];
+			dfc[1] = data[9];
+			OutputDebugString(L"found.\n");
+			felica_free(f);
+			ret = true;
+		}
+		else {
+			OutputDebugString(L"can't read card.\n");
+			felica_free(f);
+			ret = false;
+		}
 	}
 
 	return ret;
@@ -132,8 +140,8 @@ bool WatchDogStatusUpdate(int event, HWND hwnd)
 			break;
 		default:
 			if (bCardReaderEnabled) {
-				if (readIDmFromFelicaCard()) {
-					DFC dfc = {0,0,0,0};
+				DFC dfc = { 0,0 };
+				if (readDFCFromFelicaCard(dfc)) {
 					// Program起動
 					launchProgram(dfc);
 					counter_program_startup = 0;
