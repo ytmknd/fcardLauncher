@@ -4,8 +4,7 @@
 #include <shlobj.h>
 #include "launchProgram.h"
 
-HKEY hKey;
-LPCWSTR strValue = L"SOFTWARE\\FCARDLAUNCHER";
+const LPCWSTR REGKEYPATHBASE = L"SOFTWARE\\FCARDLAUNCHER";
 
 struct StEntry
 {
@@ -28,11 +27,18 @@ static StTable jt = {
 //
 //  –Ú“I: 
 //
-LONG ReadRegKeyString(const WCHAR *szKeyName, WCHAR *szBuffer, DWORD* dwBufferSize)
+LONG ReadRegKeyString(const WCHAR *szKeyPathSub,const WCHAR *szKeyName, WCHAR *szBuffer, DWORD* dwBufferSize)
 {
 	ULONG nError;
+	WCHAR szKeyPath[_MAX_PATH];
+	HKEY hKey;
 
-	nError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, strValue, 0, KEY_READ, &hKey);
+	_snwprintf_s(szKeyPath,
+		(size_t)_MAX_PATH,
+		(size_t)_MAX_PATH,
+		L"%s\\%s",REGKEYPATHBASE, szKeyPathSub); 
+
+	nError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, szKeyPath, 0, KEY_READ, &hKey);
 	if (nError != ERROR_SUCCESS) {
 		return nError;
 	}
@@ -60,7 +66,7 @@ bool initlaunchProgram()
 
 	for (i = 0; i < MAX_ENTRY; i++) {
 		if (jt.entry[i].dfc == NULL) break;
-		if (ReadRegKeyString(jt.entry[i].dfc, jt.entry[i].path, &dwBufferSize) != ERROR_SUCCESS) {
+		if (ReadRegKeyString(jt.entry[i].dfc, L"path",  jt.entry[i].path, &dwBufferSize) != ERROR_SUCCESS) {
 			_snwprintf_s(jt.entry[i].path,
 				(size_t)_MAX_PATH,
 				(size_t)_MAX_PATH,
